@@ -13,14 +13,12 @@ def parse_args():
 
 def ls(args):
     print("ls", "Аргументы:" , args)
-    return 0
 
 def cd(args):
     if len(args) != 1:
         print("cd: неверные аргументы: ожидается ровно 1 аргумент.")
         return 1
     print("cd", "Аргумент:", args[0])
-    return 0
 
 def handle_command(cmd_name, args):
     match cmd_name:
@@ -72,7 +70,6 @@ def run_script(script_path, vfs_name):
             rc = execute_line(line, vfs_name, from_script=True)
             if rc != 0:
                 print(f"(строка пропущена из-за ошибки, код {rc})")
-    return 0
 
 def repl_loop(vfs_name):
     while True:
