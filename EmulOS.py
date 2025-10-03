@@ -144,12 +144,12 @@ def cat(state: ShellState, args):
         print("cat: файл не найден или это каталог")
         return 1
     if use_b64:
-        print(base64.b64encode(node.content).decode() + "\n")
+        print(base64.b64decode(node.content).decode())
     else:
         try:
             print(node.content.decode("utf-8"), end="" + "\n")
         except:
-            print(base64.b64encode(node.content).decode())
+            print(base64.b64decode(node.content).decode())
     return 0
 
 def handle_command(state: ShellState, cmd_name, args):

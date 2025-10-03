@@ -15,3 +15,5 @@ cd ..
 ls
 cd ..
 ls docx bin
+cat bytefile.txt
+cat --base64 bytefile.txt
