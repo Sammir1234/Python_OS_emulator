@@ -1,2 +1,2 @@
 @echo_off
-python first.py --vfs NoScriptOS --vfs-root d/noScript/definitelyNoScripts
+python EmulOS.py --vfs-root vfs_test3.zip

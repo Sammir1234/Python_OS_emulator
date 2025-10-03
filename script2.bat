@@ -1,2 +1,1 @@
-@echo off
-python first.py --vfs-root /video/sigma_edit --script run_script2.txt
+python EmulOS.py --vfs-root vfs_test2.zip

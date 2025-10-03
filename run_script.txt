@@ -1,0 +1,17 @@
+ls
+ls vfs/bin
+cd vfs
+cd docs
+ls
+cat info.txt
+cd deep
+ls
+cat SECRET.txt
+cat .
+cd nowhere
+notcommand
+ls aaaaa
+cd ..
+ls
+cd ..
+ls docx bin

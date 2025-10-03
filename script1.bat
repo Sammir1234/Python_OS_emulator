@@ -1,2 +1,2 @@
 @echo off
-python first.py --vfs-root /files/vfs --script run_script1.txt
+python EmulOS.py --vfs-root vfs_test1.zip

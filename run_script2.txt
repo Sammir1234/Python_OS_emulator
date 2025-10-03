@@ -1,3 +1,0 @@
-cd argument
-cd
-ls "sbeve" uuue ""a""
