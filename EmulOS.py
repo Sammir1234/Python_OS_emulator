@@ -5,6 +5,7 @@ from pathlib import Path
 import base64
 import zipfile
 import io
+import time
 
 #---------VFS--------
 class Node:
@@ -71,6 +72,7 @@ class ShellState:
         self.vfs_name = vfs_name
         self.vfs = None
         self.cwd = []
+        self.start_time = time.time()
 
     def set_vfs(self, vfs):
         self.vfs = vfs
@@ -152,11 +154,22 @@ def cat(state: ShellState, args):
             print(base64.b64decode(node.content).decode())
     return 0
 
+def uname(state: ShellState, args):
+    print(f"{state.vfs_name} 1.4")
+    return 0
+
+def uptime(state: ShellState, args):
+    seconds = int(time.time() - state.start_time)
+    print(f"Время работы системы: {seconds} сек.")
+    return 0
+
 def handle_command(state: ShellState, cmd_name, args):
     match cmd_name:
         case 'ls': return ls(state, args)
         case 'cd': return cd(state, args)
         case 'cat': return cat(state, args)
+        case 'uname': return uname(state, args)
+        case 'uptime': return uptime(state, args)
         case 'exit': raise SystemExit(0)
         case '': return 0
         case _: 

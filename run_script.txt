@@ -17,3 +17,7 @@ cd ..
 ls docx bin
 cat bytefile.txt
 cat --base64 bytefile.txt
+uname
+uname aaaa
+uptime
+uptime dddd
