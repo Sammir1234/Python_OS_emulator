@@ -163,6 +163,82 @@ def uptime(state: ShellState, args):
     print(f"Время работы системы: {seconds} сек.")
     return 0
 
+def mv(state: ShellState, args):
+    if len(args) != 2:
+        print("mv: требуется 2 аргумента: источник и назначение")
+        return 1
+
+    src, dest = args
+    src_comps = state.canonical_path_components(src)
+    dest_comps = state.canonical_path_components(dest)
+
+    # Найти исходный узел и его родителя
+    src_parent = state.vfs.get_node(src_comps[:-1])
+    src_name = src_comps[-1]
+    if src_parent is None or src_name not in src_parent.children:
+        print(f"mv: исходный файл не найден: {src}")
+        return 1
+    src_node = src_parent.children[src_name]
+
+    # Определяем, куда перемещаем
+    dest_parent = state.vfs.get_node(dest_comps[:-1])
+    dest_name = dest_comps[-1]
+
+    if dest_parent is None:
+        print(f"mv: каталог назначения не найден: {'/'.join(dest_comps[:-1])}")
+        return 1
+
+    dest_node = state.vfs.get_node(dest_comps)
+    if dest_node and dest_node.is_dir: #Если dest - каталог
+        #Переместить внутрь каталога
+        new_parent = dest_node
+        new_name = src_name
+    else:
+        #Переименование/перемещение
+        new_parent = dest_parent
+        new_name = dest_name
+
+    #Запрет перемещения папки в саму себя
+    if src_node.is_dir and new_parent == src_node:
+        print(f"mv: нельзя переместить каталог в самого себя: {src}")
+        return 1
+
+    #Перемещение
+    del src_parent.children[src_name]
+    src_node.name = new_name
+    new_parent.children[new_name] = src_node
+    return 0
+
+def touch(state: ShellState, args):
+    if len(args) != 1:
+        print("touch: требуется ровно 1 аргумент")
+        return 1
+
+    path = args[0]
+    comps = state.canonical_path_components(path)
+    parent = state.vfs.get_node(comps[:-1])
+    fname = comps[-1]
+
+    if parent is None:
+        print(f"touch: путь не найден: {'/'.join(comps[:-1])}")
+        return 1
+    if not parent.is_dir:
+        print(f"touch: {path}: не каталог")
+        return 1
+
+    if fname in parent.children:
+        node = parent.children[fname]
+        if node.is_dir:
+            print(f"touch: {path}: это каталог")
+            return 1
+        # Файл уже существует — ничего не делаем
+        return 0
+    else:
+        new_file = Node(fname, False)
+        new_file.content = b""
+        parent.children[fname] = new_file
+        return 0
+
 def handle_command(state: ShellState, cmd_name, args):
     match cmd_name:
         case 'ls': return ls(state, args)
@@ -170,6 +246,8 @@ def handle_command(state: ShellState, cmd_name, args):
         case 'cat': return cat(state, args)
         case 'uname': return uname(state, args)
         case 'uptime': return uptime(state, args)
+        case 'mv': return mv(state, args)
+        case 'touch': return touch(state, args)
         case 'exit': raise SystemExit(0)
         case '': return 0
         case _: 

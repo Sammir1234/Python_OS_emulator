@@ -21,3 +21,25 @@ uname
 uname aaaa
 uptime
 uptime dddd
+touch file.txt
+ls
+touch docs
+cat file.txt
+mv readme.txt docs/
+ls
+ls docs/
+mv docs/readme.txt .
+ls
+mv readme.txt .
+ls
+mv readme.txt file2.txt
+ls
+mv file2.txt aaaaa/hhhhh/ffffff
+ls
+mv nofile.txt docs/
+mv bin/ docs/
+ls docs/
+mv file2.txt
+mv docs/ direct/
+ls
+ls direct/
